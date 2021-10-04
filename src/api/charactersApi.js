@@ -1,5 +1,4 @@
 import axios from "axios";
-import { BASE_CHARACTERS_URL } from "@/const";
+// import { BASE_CHARACTERS_URL } from "@/const";
 
-export const getAllCharacters = async () =>
-  await axios.get(BASE_CHARACTERS_URL);
+export const getAllCharacters = async (apiUrl) => await axios.get(apiUrl);
