@@ -1,4 +1,4 @@
-import { getAllCharacters } from "../../api/charactersApi";
+import { getAllCharacters } from "@/api/charactersApi";
 
 export default {
   namespaced: true,

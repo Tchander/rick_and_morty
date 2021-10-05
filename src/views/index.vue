@@ -29,7 +29,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { BASE_CHARACTERS_URL } from "../const";
+import { BASE_CHARACTERS_URL } from "@/const";
 
 export default {
   name: "index",

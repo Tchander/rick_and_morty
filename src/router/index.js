@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import index from "../views/index";
-import { ROUTES } from "../const";
+import { ROUTES } from "@/const";
 
 Vue.use(VueRouter);
 
