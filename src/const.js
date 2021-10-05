@@ -1,5 +1,7 @@
 export const ROUTES = {
   index: "/",
+  character: "/character/:characterId",
+  episode: "/episode/:episodeId",
 };
 export const BASE_URL = "https://rickandmortyapi.com/api/";
 export const BASE_CHARACTERS_URL = BASE_URL + "character?page=1";

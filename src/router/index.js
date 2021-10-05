@@ -1,7 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import index from "../views/index";
 import { ROUTES } from "@/const";
+import index from "../views/index";
+import character from "@/views/character";
+import episode from "@/views/episode";
 
 Vue.use(VueRouter);
 
@@ -11,11 +13,22 @@ const routes = [
     name: "index",
     component: index,
   },
+  {
+    path: ROUTES.character,
+    name: "character",
+    component: character,
+    props: true,
+  },
+  {
+    path: ROUTES.episode,
+    name: "episode",
+    component: episode,
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
-  base: process.env.BASE_URL,
   routes,
 });
 

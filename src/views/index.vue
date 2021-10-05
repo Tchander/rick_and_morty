@@ -7,7 +7,15 @@
         class="ram-character-card"
       >
         <div class="ram-character-name">
-          <a class="ram-character-name__link" href="#">{{ character.name }}</a>
+          <router-link
+            :to="{
+              name: 'character',
+              path: '/character',
+              params: { characterId: character.id },
+            }"
+            class="ram-character-name__link"
+            >{{ character.name }}</router-link
+          >
         </div>
         <div class="ram-character-species">{{ character.species }}</div>
         <img class="ram-character-image" :src="character.image" alt="image" />
