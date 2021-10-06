@@ -11,13 +11,27 @@ export default {
         console.log(e);
       }
     },
+    getCharacterById({ commit }, id) {
+      commit("updateCurrentCharacter", id);
+    },
   },
   mutations: {
     updateCharacters(state, payload) {
-      state.characters = payload;
+      state.characters = { ...payload };
+    },
+    updateCurrentCharacter(state, id) {
+      console.log(id)
+      state.currentCharacter = state.characters.results.find(
+        (x) => x.id === Number(id)
+      );
     },
   },
+  getters: {
+    characters: (state) => state.characters,
+    character: (state) => state.currentCharacter
+  },
   state: {
-    characters: {},
+    characters: null,
+    currentCharacter: null,
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="ram-container">
+  <div class="ram-container" v-if="characters">
     <div class="ram-character-cards">
       <div
         v-for="(character, i) in characters.results"
@@ -11,7 +11,7 @@
             :to="{
               name: 'character',
               path: '/character',
-              params: { characterId: character.id },
+              params: { characterId: character.id.toString() },
             }"
             class="ram-character-name__link"
             >{{ character.name }}</router-link
@@ -51,11 +51,6 @@ export default {
     ...mapState("characters", {
       characters: "characters",
     }),
-    // paginatedData() {
-    //   const start = this.pageNumber * 2,
-    //     end = start + 2;
-    //   return this.characters.results.slice(start, end);
-    // },
   },
   methods: {
     ...mapActions("characters", ["getAllCharacters"]),
