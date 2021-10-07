@@ -1,10 +1,17 @@
 <template>
-  <div>
-    <button :disabled="currentPage === 1" @click="prevPage">Previous</button>
-    <button :disabled="currentPage >= characters.info.pages" @click="nextPage">
+  <div v-if="characters">
+    <button :disabled="currentPage === 1" @click="specificPage(1)">1</button>
+    <button v-if="currentPage !== 1" @click="prevPage">Previous</button>
+    <button v-if="currentPage < characters.info.pages" @click="nextPage">
       Next
     </button>
-    <div class="ram-container" v-if="characters">
+    <button
+      :disabled="currentPage === characters.info.pages"
+      @click="specificPage(characters.info.pages)"
+    >
+      {{ characters.info.pages }}
+    </button>
+    <div class="ram-container">
       <div class="ram-index-cards">
         <div
           v-for="(character, i) in characters.results"
@@ -62,19 +69,30 @@ export default {
       },
     },
   },
-  watch: {
-    "$route.query"() {
-      this.changePage();
-    },
-  },
+  // watch: {
+  //   "$route.query"() {
+  //     this.changePage();
+  //   },
+  // },
   methods: {
     ...mapActions("characters", ["getAllCharacters"]),
     ...mapActions("currentPage", ["changeCurrentPage"]),
+    async specificPage(pageNumber) {
+      const { page } = this.$route.query;
+      this.changeCurrentPage(pageNumber);
+      if (page) {
+        if (pageNumber !== Number(page)) {
+          await this.$router.push({
+            name: "index",
+            query: { page: pageNumber },
+          });
+        }
+      }
+      await this.getAllCharacters(BASE_CHARACTERS_URL + pageNumber.toString());
+    },
     async nextPage() {
       const { page } = this.$route.query;
       this.changeCurrentPage(this.currentPage + 1);
-      console.log(this.currentPage);
-      console.log(page);
       if (page) {
         if (this.currentPage !== Number(page)) {
           await this.$router.push({
@@ -102,22 +120,20 @@ export default {
         BASE_CHARACTERS_URL + this.currentPage.toString()
       );
     },
-    changePage() {
-      const { page } = this.$route.query;
-      if (page) {
-        this.changeCurrentPage(Number(page));
-      }
-    },
+    // changePage() {
+    //   const { page } = this.$route.query;
+    //   console.log(page);
+    //   if (page) {
+    //     this.changeCurrentPage(Number(page));
+    //   }
+    // },
   },
   async mounted() {
-    await this.getAllCharacters(
-      BASE_CHARACTERS_URL + this.currentPage.toString()
-    );
     await this.$router.push({
       name: "index",
       query: { page: this.page },
     });
-    this.changePage();
+    await this.getAllCharacters(BASE_CHARACTERS_URL + this.page.toString());
   },
 };
 </script>
