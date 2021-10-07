@@ -1,20 +1,40 @@
 <template>
   <div v-if="characters">
-    <button :disabled="currentPage === 1" @click="specificPage(1)">1</button>
-    <button v-if="currentPage !== 1" @click="prevPage">Previous</button>
-    <button v-if="currentPage < characters.info.pages" @click="nextPage">
-      Next
-    </button>
-    <button
-      :disabled="currentPage === characters.info.pages"
-      @click="specificPage(characters.info.pages)"
-    >
-      {{ characters.info.pages }}
-    </button>
+    <div class="ram-pagination-buttons">
+      <button
+        class="ram-pagination-btn"
+        :disabled="currentPage === 1"
+        @click="specificPage(1)"
+      >
+        1
+      </button>
+      <button
+        class="ram-pagination-btn"
+        v-if="currentPage !== 1"
+        @click="prevPage"
+      >
+        Previous
+      </button>
+      <button
+        class="ram-pagination-btn"
+        v-if="currentPage < characters.info.pages"
+        @click="nextPage"
+      >
+        Next
+      </button>
+      <button
+        class="ram-pagination-btn"
+        :disabled="currentPage === characters.info.pages"
+        @click="specificPage(characters.info.pages)"
+      >
+        {{ characters.info.pages }}
+      </button>
+    </div>
+    <input type="text" v-model="search" />
     <div class="ram-container">
       <div class="ram-index-cards">
         <div
-          v-for="(character, i) in characters.results"
+          v-for="(character, i) in charactersByName"
           :key="i"
           class="ram-index-card"
         >
@@ -55,6 +75,11 @@ import { BASE_CHARACTERS_URL } from "@/const";
 export default {
   name: "index",
   BASE_CHARACTERS_URL,
+  data() {
+    return {
+      search: "",
+    };
+  },
   computed: {
     ...mapState("characters", {
       characters: "characters",
@@ -67,6 +92,11 @@ export default {
       set(newPage) {
         this.changeCurrentPage(newPage);
       },
+    },
+    charactersByName() {
+      return this.characters.results.filter(
+        (i) => i.name.indexOf(this.search) !== -1
+      );
     },
   },
   // watch: {
@@ -144,6 +174,7 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 25px 0;
+  width: 100%;
 }
 .ram-index-card {
   display: flex;
@@ -182,16 +213,19 @@ export default {
 .ram-index-card-episode__link:hover {
   text-decoration: underline;
 }
-button {
+.ram-pagination-buttons {
+  margin: 20px 0;
+}
+.ram-pagination-btn {
   width: 100px;
   height: 40px;
   background-color: #eef;
-  margin: 10px 10px 0 10px;
+  margin: 0 10px;
 }
-button:hover {
+.ram-pagination-btn:hover {
   cursor: pointer;
 }
-button:hover:disabled {
+.ram-pagination-btn:hover:disabled {
   cursor: not-allowed;
 }
 </style>
