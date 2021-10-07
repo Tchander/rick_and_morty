@@ -20,7 +20,6 @@ export default {
       state.characters = { ...payload };
     },
     updateCurrentCharacter(state, id) {
-      console.log(id)
       state.currentCharacter = state.characters.results.find(
         (x) => x.id === Number(id)
       );
@@ -28,7 +27,7 @@ export default {
   },
   getters: {
     characters: (state) => state.characters,
-    character: (state) => state.currentCharacter
+    character: (state) => state.currentCharacter,
   },
   state: {
     characters: null,
