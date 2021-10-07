@@ -1,5 +1,9 @@
 <template>
   <div>
+    <button :disabled="currentPage === 1" @click="prevPage">Previous</button>
+    <button :disabled="currentPage >= characters.info.pages" @click="nextPage">
+      Next
+    </button>
     <div class="ram-container" v-if="characters">
       <div class="ram-index-cards">
         <div
@@ -34,43 +38,86 @@
         </div>
       </div>
     </div>
-    <button :disabled="pageNumber === 1" @click="prevPage">Previous</button>
-    <button :disabled="pageNumber >= characters.info.pages" @click="nextPage">
-      Next
-    </button>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import { BASE_CHARACTERS_URL } from "@/const";
 
 export default {
   name: "index",
   BASE_CHARACTERS_URL,
-  data() {
-    return {
-      pageNumber: 1,
-    };
-  },
   computed: {
     ...mapState("characters", {
       characters: "characters",
     }),
+    ...mapGetters("currentPage", { page: "currentPage" }),
+    currentPage: {
+      get() {
+        return this.page;
+      },
+      set(newPage) {
+        this.changeCurrentPage(newPage);
+      },
+    },
+  },
+  watch: {
+    "$route.query"() {
+      this.changePage();
+    },
   },
   methods: {
     ...mapActions("characters", ["getAllCharacters"]),
+    ...mapActions("currentPage", ["changeCurrentPage"]),
     async nextPage() {
-      await this.getAllCharacters(this.characters.info.next);
-      this.pageNumber++;
+      const { page } = this.$route.query;
+      this.changeCurrentPage(this.currentPage + 1);
+      console.log(this.currentPage);
+      console.log(page);
+      if (page) {
+        if (this.currentPage !== Number(page)) {
+          await this.$router.push({
+            name: "index",
+            query: { page: this.currentPage },
+          });
+        }
+      }
+      await this.getAllCharacters(
+        BASE_CHARACTERS_URL + this.currentPage.toString()
+      );
     },
     async prevPage() {
-      await this.getAllCharacters(this.characters.info.prev);
-      this.pageNumber--;
+      const { page } = this.$route.query;
+      this.changeCurrentPage(this.currentPage - 1);
+      if (page) {
+        if (this.currentPage !== Number(page)) {
+          await this.$router.push({
+            name: "index",
+            query: { page: this.currentPage },
+          });
+        }
+      }
+      await this.getAllCharacters(
+        BASE_CHARACTERS_URL + this.currentPage.toString()
+      );
+    },
+    changePage() {
+      const { page } = this.$route.query;
+      if (page) {
+        this.changeCurrentPage(Number(page));
+      }
     },
   },
   async mounted() {
-    await this.getAllCharacters(BASE_CHARACTERS_URL);
+    await this.getAllCharacters(
+      BASE_CHARACTERS_URL + this.currentPage.toString()
+    );
+    await this.$router.push({
+      name: "index",
+      query: { page: this.page },
+    });
+    this.changePage();
   },
 };
 </script>
@@ -123,6 +170,7 @@ button {
   width: 100px;
   height: 40px;
   background-color: #eef;
+  margin: 10px 10px 0 10px;
 }
 button:hover {
   cursor: pointer;
