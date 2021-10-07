@@ -30,7 +30,16 @@
         {{ characters.info.pages }}
       </button>
     </div>
-    <input type="text" v-model="search" />
+    <div class="ram-search-field">
+      <input type="text" v-model="search" />
+    </div>
+    <div class="ram-selector">
+      <select v-model="filterBySpecies">
+        <option v-for="op of options" :value="op.value" :key="op.value">
+          {{ op.text }}
+        </option>
+      </select>
+    </div>
     <div class="ram-container">
       <div class="ram-index-cards">
         <div
@@ -78,12 +87,23 @@ export default {
   data() {
     return {
       search: "",
+      filterBySpecies: "All",
+      options: [
+        { value: "All", text: "All species" },
+        { value: "Human", text: "Humans" },
+        { value: "Alien", text: "Aliens" },
+      ],
     };
   },
   computed: {
     ...mapState("characters", {
       characters: "characters",
     }),
+    charactersByName() {
+      return this.filteredBySpecies().filter(
+        (i) => i.name.indexOf(this.search) !== -1
+      );
+    },
     ...mapGetters("currentPage", { page: "currentPage" }),
     currentPage: {
       get() {
@@ -92,11 +112,6 @@ export default {
       set(newPage) {
         this.changeCurrentPage(newPage);
       },
-    },
-    charactersByName() {
-      return this.characters.results.filter(
-        (i) => i.name.indexOf(this.search) !== -1
-      );
     },
   },
   // watch: {
@@ -107,6 +122,15 @@ export default {
   methods: {
     ...mapActions("characters", ["getAllCharacters"]),
     ...mapActions("currentPage", ["changeCurrentPage"]),
+    filteredBySpecies() {
+      if (this.filterBySpecies !== "All") {
+        return this.characters.results.filter(
+          (i) => i.species === this.filterBySpecies
+        );
+      } else {
+        return this.characters.results;
+      }
+    },
     async specificPage(pageNumber) {
       const { page } = this.$route.query;
       this.changeCurrentPage(pageNumber);
@@ -227,5 +251,8 @@ export default {
 }
 .ram-pagination-btn:hover:disabled {
   cursor: not-allowed;
+}
+.ram-search-field {
+  margin-bottom: 20px;
 }
 </style>
