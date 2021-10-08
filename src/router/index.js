@@ -28,6 +28,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  base: "/rick_and_morty/",
   mode: "history",
   routes,
 });
