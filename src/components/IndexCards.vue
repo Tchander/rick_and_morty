@@ -43,7 +43,6 @@ export default {
 <style scoped>
 .ram-index-cards {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   margin: 25px 0;
   width: 100%;
@@ -54,7 +53,7 @@ export default {
   width: 24%;
   background-color: #edd3ee;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.13);
-  margin: 15px 0;
+  margin: 15px 5px;
   padding: 10px 0;
   border-radius: 10px;
 }

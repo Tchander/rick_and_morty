@@ -8,7 +8,7 @@
       </button>
     </div>
     <div>
-      <select class="ram-selector" v-model="filterBySpecies">
+      <select class="ram-selector" v-model="filterByStatus">
         <option
           v-for="op of $options.OPTIONS"
           :value="op.value"
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       search: "",
-      filterBySpecies: "All",
+      filterByStatus: "All",
     };
   },
   computed: {
@@ -45,16 +45,16 @@ export default {
       characters: "characters",
     }),
     charactersByName() {
-      return this.filteredBySpecies().filter(
+      return this.filteredByStatus().filter(
         (i) => i.name.indexOf(this.search) !== -1
       );
     },
   },
   methods: {
-    filteredBySpecies() {
-      if (this.filterBySpecies !== "All") {
+    filteredByStatus() {
+      if (this.filterByStatus !== "All") {
         return this.characters.results.filter(
-          (i) => i.species === this.filterBySpecies
+          (i) => i.status === this.filterByStatus
         );
       } else {
         return this.characters.results;
