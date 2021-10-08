@@ -115,14 +115,21 @@ export default {
 }
 .ram-pagination-btn {
   width: 100px;
-  height: 40px;
-  background-color: #eef;
+  font-size: 16px;
+  background-color: #edd3ee;
+  border: 0;
+  padding: 12px 0;
+  border-radius: 5px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.13);
   margin: 0 10px;
+  transition: 0.3s;
 }
 .ram-pagination-btn:hover {
   cursor: pointer;
+  background-color: #e6a9e8;
 }
 .ram-pagination-btn:hover:disabled {
   cursor: not-allowed;
+  background-color: #edd3ee;
 }
 </style>

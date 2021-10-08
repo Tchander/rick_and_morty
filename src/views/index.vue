@@ -2,10 +2,13 @@
   <div v-if="characters">
     <pagination-buttons />
     <div class="ram-search-field">
-      <input type="text" v-model="search" />
+      <input type="text" v-model="search" placeholder="Enter character name" />
+      <button v-if="search" class="ram-search-clear-btn" @click="search = ''">
+        x
+      </button>
     </div>
-    <div class="ram-selector">
-      <select v-model="filterBySpecies">
+    <div>
+      <select class="ram-selector" v-model="filterBySpecies">
         <option
           v-for="op of $options.OPTIONS"
           :value="op.value"
@@ -63,6 +66,42 @@ export default {
 
 <style scoped>
 .ram-search-field {
-  margin-bottom: 20px;
+  position: relative;
+  width: 300px;
+  margin: 0 auto 20px auto;
+}
+.ram-search-field > input {
+  width: 100%;
+  padding: 5px;
+  font-size: 20px;
+  background-color: #edd3ee;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.13);
+  outline: none;
+  transition: 0.3s;
+}
+.ram-search-clear-btn {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  border-radius: 50%;
+  color: #000;
+  font-weight: 700;
+  background-color: #edd3ee;
+  font-size: 20px;
+  border: 0;
+  cursor: pointer;
+}
+.ram-selector {
+  font-size: 16px;
+  background-color: #edd3ee;
+  color: #000;
+  padding: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.13);
+  border: 0;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>

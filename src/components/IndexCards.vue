@@ -53,6 +53,7 @@ export default {
   flex-direction: column;
   width: 24%;
   background-color: #edd3ee;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.13);
   margin: 15px 0;
   padding: 10px 0;
   border-radius: 10px;
