@@ -46,8 +46,8 @@ export default {
   methods: {
     ...mapActions("characters", ["getCharacterById"]),
   },
-  mounted() {
-    this.getCharacterById(this.characterId);
+  async mounted() {
+    await this.getCharacterById(this.characterId);
   },
 };
 </script>

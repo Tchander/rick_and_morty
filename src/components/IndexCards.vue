@@ -23,7 +23,15 @@
         :key="index"
         class="ram-index-card-episode"
       >
-        <a class="ram-index-card-episode__link" href="#">{{ episode }}</a>
+        <router-link
+          :to="{
+            name: 'episode',
+            path: '/episode',
+            params: { episodeId: currentEpisode(episode).toString() },
+          }"
+          class="ram-index-card-episode__link"
+          >{{ episode }}</router-link
+        >
       </div>
     </div>
   </div>
@@ -35,6 +43,14 @@ export default {
   props: {
     charactersByName: {
       required: true,
+    },
+  },
+  methods: {
+    currentEpisode(episodeApi) {
+      return episodeApi
+        .split("")
+        .filter((value) => !isNaN(value))
+        .join("");
     },
   },
 };
