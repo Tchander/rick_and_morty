@@ -1,4 +1,4 @@
-import { getAllCharacters } from "@/api/charactersApi";
+import { getAllCharacters, getCharacterById } from "@/api/charactersApi";
 
 export default {
   namespaced: true,
@@ -11,18 +11,21 @@ export default {
         console.log(e);
       }
     },
-    getCharacterById({ commit }, id) {
-      commit("updateCurrentCharacter", id);
+    async getCharacterById({ commit }, id) {
+      try {
+        const { data } = await getCharacterById(id);
+        commit("updateCurrentCharacter", data);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   mutations: {
     updateCharacters(state, payload) {
       state.characters = { ...payload };
     },
-    updateCurrentCharacter(state, id) {
-      state.currentCharacter = state.characters.results.find(
-        (x) => x.id === Number(id)
-      );
+    updateCurrentCharacter(state, payload) {
+      state.currentCharacter = { ...payload };
     },
   },
   getters: {
