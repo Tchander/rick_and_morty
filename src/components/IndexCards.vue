@@ -30,7 +30,7 @@
             params: { episodeId: currentEpisode(episode).toString() },
           }"
           class="ram-index-card-episode__link"
-          >{{ episode }}</router-link
+          >Эпизод {{ currentEpisode(episode) }}</router-link
         >
       </div>
     </div>
@@ -46,8 +46,8 @@ export default {
     },
   },
   methods: {
-    currentEpisode(episodeApi) {
-      return episodeApi
+    currentEpisode(episodeUrl) {
+      return episodeUrl
         .split("")
         .filter((value) => !isNaN(value))
         .join("");
@@ -96,9 +96,10 @@ export default {
 .ram-index-card-episode__link {
   text-decoration: none;
   color: #000000;
+  font-size: 18px;
   cursor: pointer;
 }
 .ram-index-card-episode__link:hover {
-  text-decoration: underline;
+  color: #4d75cd;
 }
 </style>
