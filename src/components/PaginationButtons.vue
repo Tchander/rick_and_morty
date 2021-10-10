@@ -10,14 +10,14 @@
     <button
       class="ram-pagination-btn"
       v-if="currentPage !== 1"
-      @click="prevPage"
+      @click="paginate($options.PREV_PAGE_TYPE)"
     >
       Previous
     </button>
     <button
       class="ram-pagination-btn"
       v-if="currentPage < characters.info.pages"
-      @click="nextPage"
+      @click="paginate($options.NEXT_PAGE_TYPE)"
     >
       Next
     </button>
@@ -38,6 +38,8 @@ import { BASE_CHARACTERS_URL } from "@/const";
 export default {
   name: "PaginationButtons",
   BASE_CHARACTERS_URL,
+  NEXT_PAGE_TYPE: "next",
+  PREV_PAGE_TYPE: "prev",
   computed: {
     ...mapState("characters", {
       characters: "characters",
@@ -68,31 +70,16 @@ export default {
       }
       await this.getAllCharacters(BASE_CHARACTERS_URL + pageNumber.toString());
     },
-    async nextPage() {
+    async paginate(type = this.$options.NEXT_PAGE_TYPE) {
       const { page } = this.$route.query;
-      this.changeCurrentPage(this.currentPage + 1);
-      if (page) {
-        if (this.currentPage !== Number(page)) {
-          await this.$router.push({
-            name: "index",
-            query: { page: this.currentPage },
-          });
-        }
-      }
-      await this.getAllCharacters(
-        BASE_CHARACTERS_URL + this.currentPage.toString()
+      this.changeCurrentPage(
+        this.currentPage + (type === this.$options.NEXT_PAGE_TYPE ? 1 : -1)
       );
-    },
-    async prevPage() {
-      const { page } = this.$route.query;
-      this.changeCurrentPage(this.currentPage - 1);
-      if (page) {
-        if (this.currentPage !== Number(page)) {
-          await this.$router.push({
-            name: "index",
-            query: { page: this.currentPage },
-          });
-        }
+      if (this.currentPage !== Number(page)) {
+        await this.$router.push({
+          name: "index",
+          query: { page: this.currentPage },
+        });
       }
       await this.getAllCharacters(
         BASE_CHARACTERS_URL + this.currentPage.toString()
@@ -100,11 +87,11 @@ export default {
     },
   },
   async mounted() {
-    await this.$router.push({
-      name: "index",
-      query: { page: this.page },
-    });
-    await this.getAllCharacters(BASE_CHARACTERS_URL + this.page.toString());
+    if (this.$route.query.page) {
+      this.changeCurrentPage(+this.$route.query.page);
+    }
+    const page = this.page || 1;
+    await this.getAllCharacters(BASE_CHARACTERS_URL + page);
   },
 };
 </script>

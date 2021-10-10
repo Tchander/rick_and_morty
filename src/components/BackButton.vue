@@ -5,7 +5,7 @@
       :to="{
         name: 'index',
         path: '/',
-        query: { page: this.currentPage },
+        query: { page: currentPage },
       }"
       >Back</router-link
     >
@@ -13,8 +13,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "BackButton",
+  computed: mapGetters("currentPage", ["currentPage"]),
 };
 </script>
 
